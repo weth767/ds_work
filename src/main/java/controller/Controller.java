@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.Optional;
 
 public class Controller {
-    private SessionFactory factory;
-    private Session session;
+    protected SessionFactory factory;
+    protected Session session;
 
     public Controller(SessionFactory factory) {
         this.factory = factory;

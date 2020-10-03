@@ -17,7 +17,6 @@ import java.util.Date;
 @Setter
 @Getter
 @Entity
-@ToString
 public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,4 +36,15 @@ public class Person {
 
     @OneToOne(mappedBy = "owner")
     private Account account;
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", cpf='" + cpf + '\'' +
+                ", birthday=" + birthday.toString() + '\'' +
+                ", account=" + account +
+                '}';
+    }
 }

@@ -17,7 +17,6 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @Entity
-@ToString
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,5 +30,13 @@ public class Account {
 
     public Account() {
         this.balance = new BigDecimal(Constants.START_VALUE);
+    }
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "id=" + id +
+                ", balance=" + balance +
+                '}';
     }
 }
