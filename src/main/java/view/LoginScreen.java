@@ -32,6 +32,7 @@ public class LoginScreen extends javax.swing.JFrame {
          if (Objects.nonNull(user)) {
              MainScreen mainScreen = new MainScreen();
              mainScreen.setVisible(true);
+             mainScreen.setUser(user);
              this.setVisible(false);
          } else {
              JOptionPane.showMessageDialog(this, "Usuário ou Senha Incorretos!");

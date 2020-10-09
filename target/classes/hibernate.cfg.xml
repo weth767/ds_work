@@ -17,5 +17,6 @@
         <mapping class="model.Account"/>
         <mapping class="model.Person"/>
         <mapping class="model.User"/>
+        <mapping class="model.Extract"/>
     </session-factory>
 </hibernate-configuration>

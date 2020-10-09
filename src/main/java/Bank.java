@@ -2,12 +2,11 @@ import org.jgroups.JChannel;
 import org.jgroups.Message;
 import org.jgroups.ReceiverAdapter;
 import org.jgroups.View;
-import view.StartScreen;
 
 public class Bank extends ReceiverAdapter {
     JChannel channel;
 
-    private void start() throws Exception{
+    private void start() throws Exception {
         channel = new JChannel();
         channel.setReceiver(this);
         channel.connect("Parana Internet Banking");

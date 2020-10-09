@@ -6,11 +6,29 @@ package view;
  * and open the template in the editor.
  */
 
+import connection.Connection;
+import controller.AccountController;
+import controller.UserController;
+import model.Account;
+import model.User;
+
+import javax.swing.JOptionPane;
+import java.math.BigDecimal;
+import java.util.List;
+
 /**
  *
  * @author weth
  */
 public class MainScreen extends javax.swing.JFrame {
+
+    private User user;
+    private UserController userController = new UserController(Connection.getConnection());
+    private AccountController accountController = new AccountController(Connection.getConnection());
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     /**
      * Creates new form MainScreen
@@ -37,12 +55,32 @@ public class MainScreen extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         transferButton.setText("Transferência");
+        transferButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                transferButtonActionPerformed(evt);
+            }
+        });
 
         balanceButton.setText("Saldo");
+        balanceButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                balanceButtonActionPerformed(evt);
+            }
+        });
 
         extractButton.setText("Extrato");
+        extractButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                extractButtonActionPerformed(evt);
+            }
+        });
 
         amountButton.setText("Montante");
+        amountButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                amountButtonActionPerformed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Ubuntu", 0, 24)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -81,7 +119,26 @@ public class MainScreen extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void transferButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transferButtonActionPerformed
+        TransferScreen transferScreen = new TransferScreen(this, true);
+    }//GEN-LAST:event_transferButtonActionPerformed
+
+    private void balanceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_balanceButtonActionPerformed
+        JOptionPane.showMessageDialog(this, "Seu saldo é: R$"
+                + accountController.getBalance(user.getPerson().getAccount().getId()));
+    }//GEN-LAST:event_balanceButtonActionPerformed
+
+    private void extractButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_extractButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_extractButtonActionPerformed
+
+    private void amountButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_amountButtonActionPerformed
+        JOptionPane.showMessageDialog(this, "O montante é: R$"
+                + accountController.getAmount());
+    }//GEN-LAST:event_amountButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
