@@ -124,6 +124,8 @@ public class MainScreen extends javax.swing.JFrame {
 
     private void transferButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transferButtonActionPerformed
         TransferScreen transferScreen = new TransferScreen(this, true);
+        transferScreen.setUser(user);
+        transferScreen.setVisible(true);
     }//GEN-LAST:event_transferButtonActionPerformed
 
     private void balanceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_balanceButtonActionPerformed
@@ -132,7 +134,9 @@ public class MainScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_balanceButtonActionPerformed
 
     private void extractButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_extractButtonActionPerformed
-        // TODO add your handling code here:
+       ExtractScreen extractScreen = new ExtractScreen(this, true, user);
+       extractScreen.setVisible(true);
+
     }//GEN-LAST:event_extractButtonActionPerformed
 
     private void amountButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_amountButtonActionPerformed

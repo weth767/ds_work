@@ -42,7 +42,6 @@ public class Account {
         return "Account{" +
                 "id=" + id +
                 ", balance=" + balance +
-                ", extract=[" + extracts.toString() + "]" +
                 '}';
     }
 }

@@ -16,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import java.math.BigDecimal;
 import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Getter
@@ -39,7 +40,7 @@ public class Extract {
     @Column
     private BigDecimal value;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     private Account account;
 
     @Override
@@ -50,5 +51,12 @@ public class Extract {
                 ", operation=" + operation +
                 ", value=" + value +
                 '}';
+    }
+
+    public String toViewExtract() {
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+        return format.format(date) + " - " + timeFormat.format(time) + ", R$" + value
+                + (operation.equals(EnumOperationType.TRANSFER) ? ", Transferência": ", Recebimento");
     }
 }
