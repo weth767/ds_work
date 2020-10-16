@@ -12,12 +12,13 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import java.io.Serializable;
 import java.util.Date;
 
 @Setter
 @Getter
 @Entity
-public class Person {
+public class Person implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

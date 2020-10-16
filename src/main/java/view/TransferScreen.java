@@ -5,15 +5,21 @@
  */
 package view;
 
+import DTO.MessageDTO;
+import DTO.TransferDTO;
 import connection.Connection;
 import controller.AccountController;
 import controller.ExtractController;
 import jdk.nashorn.internal.scripts.JO;
 import model.Account;
+import model.Bank;
 import model.User;
+import model.enumeration.EnumExecutedClass;
+import model.enumeration.EnumOperationType;
 
 import javax.swing.JOptionPane;
 import java.math.BigDecimal;
+import java.util.Objects;
 
 /**
  *
@@ -132,15 +138,28 @@ public class TransferScreen extends javax.swing.JDialog {
         AccountController accountController = new AccountController(Connection.getConnection());
         String value = valueField.getText()
                 .replace(",", ".").replace("R$", "").trim();
-        boolean wasTransfered = accountController.transferValue(user.getPerson().getAccount(), cpfField.getText(), new BigDecimal(value));
-        if (wasTransfered) { JOptionPane.showMessageDialog(this, "Valor transferido com sucesso!", null, JOptionPane.INFORMATION_MESSAGE); }
-        else { JOptionPane.showMessageDialog(this, "Erro ao transferir com sucesso!", null, JOptionPane.ERROR_MESSAGE); }
+        TransferDTO transferDTO = accountController.transferValue(user.getPerson().getAccount(), cpfField.getText(), new BigDecimal(value));
+        if (Objects.nonNull(transferDTO)) {
+            MessageDTO messageDTO = new MessageDTO();
+            messageDTO.setExecutedClass(EnumExecutedClass.ACCOUNT);
+            messageDTO.setOperationType(EnumOperationType.TRANSFER);
+            messageDTO.setObject(transferDTO);
+            Bank bank = new Bank();
+            try {
+                bank.send(messageDTO);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            JOptionPane.showMessageDialog(this, "Valor transferido com sucesso!", null,
+                JOptionPane.INFORMATION_MESSAGE);
+        }
+        else { JOptionPane.showMessageDialog(this,
+        "Erro ao transferir com sucesso!", null, JOptionPane.ERROR_MESSAGE); }
         cancelButton.doClick();
     }//GEN-LAST:event_transferButtonActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        MainScreen mainScreen = new MainScreen();
-        mainScreen.setUser(user);
+        MainScreen mainScreen = new MainScreen(user);
         mainScreen.setVisible(true);
         this.setVisible(false);
         this.dispose();

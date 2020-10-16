@@ -8,11 +8,15 @@
         <property name="format_sql">true</property>
         <property name="dialect">utils.SQLiteDialect</property>
         <property name="connection.driver_class">org.sqlite.JDBC</property>
-        <property name="connection.url">jdbc:sqlite:database.sqlite</property>
+        <property name="connection.url">jdbc:sqlite:src/main/resources/database.sqlite</property>
         <property name="connection.username"/>
         <property name="connection.password"/>
-
+        <property name="hibernate.connection.autocommit">true</property>
         <property name="hibernate.hbm2ddl.auto">update</property>
+        <property name="hibernate.c3p0.min_size">5</property>
+        <property name="hibernate.c3p0.max_size">20</property>
+        <property name="hibernate.c3p0.acquire_increment">5</property>
+        <property name="hibernate.c3p0.timeout">1800</property>
 
         <mapping class="model.Account"/>
         <mapping class="model.Person"/>

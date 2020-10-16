@@ -14,6 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
@@ -22,7 +23,7 @@ import java.util.Date;
 @Getter
 @Setter
 @Entity
-public class Extract {
+public class Extract implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

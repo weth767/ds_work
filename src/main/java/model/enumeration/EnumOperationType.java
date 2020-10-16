@@ -1,6 +1,7 @@
 package model.enumeration;
 
-public enum  EnumOperationType {
+public enum EnumOperationType {
     TRANSFER,
-    RECEIVE
+    RECEIVE,
+    LOGIN
 }

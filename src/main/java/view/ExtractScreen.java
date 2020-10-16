@@ -26,6 +26,7 @@ public class ExtractScreen extends javax.swing.JDialog {
     public ExtractScreen(java.awt.Frame parent, boolean modal, User user) {
         super(parent, modal);
         initComponents();
+        this.user = user;
         DefaultListModel model = new DefaultListModel();
         System.out.println(user);
         ExtractController extractController = new ExtractController(Connection.getConnection());
@@ -118,8 +119,7 @@ public class ExtractScreen extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        MainScreen mainScreen = new MainScreen();
-        mainScreen.setUser(user);
+        MainScreen mainScreen = new MainScreen(user);
         mainScreen.setVisible(true);
         this.setVisible(false);
         this.dispose();

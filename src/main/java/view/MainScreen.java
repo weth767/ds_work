@@ -6,11 +6,15 @@ package view;
  * and open the template in the editor.
  */
 
+import DTO.MessageDTO;
 import connection.Connection;
 import controller.AccountController;
 import controller.UserController;
 import model.Account;
+import model.Bank;
 import model.User;
+import model.enumeration.EnumExecutedClass;
+import model.enumeration.EnumOperationType;
 
 import javax.swing.JOptionPane;
 import java.math.BigDecimal;
@@ -23,18 +27,25 @@ import java.util.List;
 public class MainScreen extends javax.swing.JFrame {
 
     private User user;
-    private UserController userController = new UserController(Connection.getConnection());
     private AccountController accountController = new AccountController(Connection.getConnection());
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 
     /**
      * Creates new form MainScreen
      */
-    public MainScreen() {
+    public MainScreen(User user) {
         initComponents();
+        Bank bank = new Bank();
+        this.user = user;
+        try {
+            MessageDTO messageDTO = new MessageDTO();
+            messageDTO.setExecutedClass(EnumExecutedClass.USER);
+            messageDTO.setOperationType(EnumOperationType.LOGIN);
+            messageDTO.setObject(user);
+            messageDTO.setExecutedSql("");
+            bank.send(messageDTO);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**

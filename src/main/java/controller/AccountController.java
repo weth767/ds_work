@@ -1,5 +1,6 @@
 package controller;
 
+import DTO.TransferDTO;
 import model.Account;
 import model.Extract;
 import model.User;
@@ -55,10 +56,11 @@ public class AccountController extends Controller {
         return accounts.stream().findFirst().orElse(null);
     }
 
-    public boolean transferValue(Account source, String cpf, BigDecimal value) {
+    public TransferDTO transferValue(Account source, String cpf, BigDecimal value) {
         BigDecimal currentBalance = getBalance(source.getId());
         Account target = getAccountByCpf(cpf);
         if (currentBalance.compareTo(value) >= 0 && Objects.nonNull(target)) {
+            TransferDTO transferDTO = null;
             this.session = this.factory.openSession();
             Transaction transaction = this.session.beginTransaction();
             BigDecimal newBalance = currentBalance.subtract(value);
@@ -90,8 +92,14 @@ public class AccountController extends Controller {
             session.flush();
             transaction.commit();
             session.close();
-            return true;
+
+            transferDTO = new TransferDTO();
+            transferDTO.setTarget(target);
+            transferDTO.setSource(source);
+            transferDTO.setValue(value);
+
+            return transferDTO;
         }
-        return false;
+        return null;
     }
 }

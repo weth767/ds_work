@@ -30,9 +30,8 @@ public class LoginScreen extends javax.swing.JFrame {
         User user
          = controller.findByUserPassWord(loginField.getText(), new String(passwordField.getPassword()));
          if (Objects.nonNull(user)) {
-             MainScreen mainScreen = new MainScreen();
+             MainScreen mainScreen = new MainScreen(user);
              mainScreen.setVisible(true);
-             mainScreen.setUser(user);
              this.setVisible(false);
          } else {
              JOptionPane.showMessageDialog(this, "Usuário ou Senha Incorretos!");
