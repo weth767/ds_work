@@ -33,6 +33,7 @@ public class StartScreen extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         loginButton.setText("Logar-se");
         loginButton.addActionListener(new java.awt.event.ActionListener() {
@@ -99,12 +100,14 @@ public class StartScreen extends javax.swing.JFrame {
         LoginScreen loginScreen = new LoginScreen();
         loginScreen.setVisible(true);
         this.setVisible(false);
+        this.dispose();
     }//GEN-LAST:event_loginButtonActionPerformed
 
     private void createAccountButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createAccountButtonActionPerformed
         CreateAccountScreen createAccountScreen = new CreateAccountScreen();
         createAccountScreen.setVisible(true);
         this.setVisible(false);
+        this.dispose();
     }//GEN-LAST:event_createAccountButtonActionPerformed
 
 

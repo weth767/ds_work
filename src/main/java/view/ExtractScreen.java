@@ -5,8 +5,7 @@
  */
 package view;
 
-import connection.Connection;
-import controller.ExtractController;
+import controller.AccountController;
 import model.Extract;
 import model.User;
 
@@ -20,6 +19,7 @@ import java.util.List;
 public class ExtractScreen extends javax.swing.JDialog {
 
     private User user;
+    private MainScreen mainScreen;
     /**
      * Creates new form ExtractScreen
      */
@@ -27,10 +27,10 @@ public class ExtractScreen extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         this.user = user;
+        this.mainScreen = (MainScreen) parent;
         DefaultListModel model = new DefaultListModel();
-        System.out.println(user);
-        ExtractController extractController = new ExtractController(Connection.getConnection());
-        List<Extract> extracts = extractController.findAllByAccountId(user.getPerson().getAccount().getId());
+        AccountController accountController = new AccountController();
+        List<Extract> extracts = accountController.getAccountByCpf(user.getCpf()).getExtracts();
         extracts.forEach(extract -> {
             model.addElement(extract.toViewExtract());
         });
@@ -53,6 +53,7 @@ public class ExtractScreen extends javax.swing.JDialog {
         extractList = new javax.swing.JList<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -119,7 +120,6 @@ public class ExtractScreen extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        MainScreen mainScreen = new MainScreen(user);
         mainScreen.setVisible(true);
         this.setVisible(false);
         this.dispose();

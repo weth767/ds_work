@@ -5,10 +5,9 @@
  */
 package view;
 
-import connection.Connection;
-import controller.Controller;
+import controller.AccountController;
+import controller.UserController;
 import model.Account;
-import model.Person;
 import model.User;
 
 import javax.swing.JOptionPane;
@@ -26,33 +25,30 @@ public class CreateAccountScreen extends javax.swing.JFrame {
      */
     public CreateAccountScreen() {
         initComponents();
+        this.userController = new UserController();
+        this.accountController = new AccountController();
     }
-    public Person person;
     public Account account;
     public User user;
-    public Controller controller;
+    public UserController userController;
+    public AccountController accountController;
 
     private void saveNewUser() {
         this.user = new User();
-        this.person = new Person();
         this.account = new Account();
-        this.controller = new Controller(Connection.getConnection());
-        person.setName(this.nameField.getText());
-        person.setCpf(this.cpfField.getText());
+        user.setName(this.nameField.getText());
+        user.setCpf(this.cpfField.getText());
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         try {
-            person.setBirthday(simpleDateFormat.parse(birthdayField.getText()));
+            user.setBirthday(simpleDateFormat.parse(birthdayField.getText()));
         } catch (ParseException e) {
             System.out.println("Não foi possível converter a data, " + e.getMessage());
         }
-        Long id = (Long) controller.save(person);
-        person.setId(id);
-        account.setOwner(person);
         user.setUsername(userField.getText());
         user.setPassword(new String(passwordField.getPassword()));
-        user.setPerson(person);
-        controller.save(account);
-        controller.save(user);
+        userController.save(user);
+        account.setOwner(user);
+        accountController.save(account);
         int answer = JOptionPane.showConfirmDialog(this,
                 "Usuário cadastrado com sucesso", "Confirmação",
                 JOptionPane.DEFAULT_OPTION);
@@ -87,6 +83,7 @@ public class CreateAccountScreen extends javax.swing.JFrame {
         cancelButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("PARANA INTERNET BANKING");
@@ -230,6 +227,7 @@ public class CreateAccountScreen extends javax.swing.JFrame {
         StartScreen startScreen = new StartScreen();
         startScreen.setVisible(true);
         this.setVisible(false);
+        this.dispose();
     }//GEN-LAST:event_cancelButtonActionPerformed
 
 

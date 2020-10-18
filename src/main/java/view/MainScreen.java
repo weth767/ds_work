@@ -7,10 +7,7 @@ package view;
  */
 
 import DTO.MessageDTO;
-import connection.Connection;
 import controller.AccountController;
-import controller.UserController;
-import model.Account;
 import model.Bank;
 import model.User;
 import model.enumeration.EnumExecutedClass;
@@ -18,7 +15,8 @@ import model.enumeration.EnumOperationType;
 
 import javax.swing.JOptionPane;
 import java.math.BigDecimal;
-import java.util.List;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 
 /**
  *
@@ -27,15 +25,15 @@ import java.util.List;
 public class MainScreen extends javax.swing.JFrame {
 
     private User user;
-    private AccountController accountController = new AccountController(Connection.getConnection());
-
+    private AccountController accountController = new AccountController();
+    Bank bank;
     /**
      * Creates new form MainScreen
      */
     public MainScreen(User user) {
         initComponents();
-        Bank bank = new Bank();
         this.user = user;
+        bank = new Bank(this.user);
         try {
             MessageDTO messageDTO = new MessageDTO();
             messageDTO.setExecutedClass(EnumExecutedClass.USER);
@@ -62,8 +60,10 @@ public class MainScreen extends javax.swing.JFrame {
         extractButton = new javax.swing.JButton();
         amountButton = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
+        logoutButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         transferButton.setText("Transferência");
         transferButton.addActionListener(new java.awt.event.ActionListener() {
@@ -97,36 +97,47 @@ public class MainScreen extends javax.swing.JFrame {
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("PARANA INTERNET BANKING");
 
+        logoutButton.setText("Logout");
+        logoutButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                logoutButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(transferButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(balanceButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(extractButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(amountButton)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addComponent(transferButton)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(balanceButton)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(extractButton)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(amountButton)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(logoutButton)
+                                                .addGap(0, 2, Short.MAX_VALUE)))
+                                .addContainerGap())
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(transferButton)
-                    .addComponent(balanceButton)
-                    .addComponent(extractButton)
-                    .addComponent(amountButton))
-                .addGap(41, 41, 41)
-                .addComponent(jLabel3)
-                .addContainerGap(67, Short.MAX_VALUE))
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(transferButton)
+                                        .addComponent(balanceButton)
+                                        .addComponent(extractButton)
+                                        .addComponent(amountButton)
+                                        .addComponent(logoutButton))
+                                .addGap(40, 40, 40)
+                                .addComponent(jLabel3)
+                                .addContainerGap(68, Short.MAX_VALUE))
         );
 
         pack();
@@ -140,13 +151,17 @@ public class MainScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_transferButtonActionPerformed
 
     private void balanceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_balanceButtonActionPerformed
+        BigDecimal value = accountController.getAccountByCpf(user.getCpf()).getBalance();
+        DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols();
+        decimalFormatSymbols.setDecimalSeparator(',');
+        decimalFormatSymbols.setGroupingSeparator('.');
         JOptionPane.showMessageDialog(this, "Seu saldo é: R$"
-                + accountController.getBalance(user.getPerson().getAccount().getId()));
+                +  new DecimalFormat("#,##0.00", decimalFormatSymbols).format(value));
     }//GEN-LAST:event_balanceButtonActionPerformed
 
     private void extractButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_extractButtonActionPerformed
-       ExtractScreen extractScreen = new ExtractScreen(this, true, user);
-       extractScreen.setVisible(true);
+        ExtractScreen extractScreen = new ExtractScreen(this, true, user);
+        extractScreen.setVisible(true);
 
     }//GEN-LAST:event_extractButtonActionPerformed
 
@@ -155,12 +170,21 @@ public class MainScreen extends javax.swing.JFrame {
                 + accountController.getAmount());
     }//GEN-LAST:event_amountButtonActionPerformed
 
+    private void logoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutButtonActionPerformed
+        bank.close();
+        StartScreen startScreen = new StartScreen();
+        startScreen.setVisible(true);
+        this.setVisible(false);
+        this.dispose();
+    }//GEN-LAST:event_logoutButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton amountButton;
     private javax.swing.JButton balanceButton;
     private javax.swing.JButton extractButton;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JButton logoutButton;
     private javax.swing.JButton transferButton;
     // End of variables declaration//GEN-END:variables
 }

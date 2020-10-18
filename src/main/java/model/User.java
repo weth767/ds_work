@@ -1,33 +1,31 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
 import java.io.Serializable;
+import java.util.Date;
 
 @Getter
 @Setter
-@Entity
-@ToString
 public class User implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(nullable = false, unique = true)
     private String username;
-
-    @Column(nullable = false)
     private String password;
+    private String name;
+    private String cpf;
+    private Date birthday;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private Person person;
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", cpf='" + cpf + '\'' +
+                ", birthday=" + birthday +
+                '}';
+    }
 }

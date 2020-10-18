@@ -1,0 +1,65 @@
+[ {
+  "id" : 1,
+  "balance" : 1420.55,
+  "owner" : {
+    "id" : 1,
+    "username" : "zezinho",
+    "password" : "1234",
+    "name" : "jose",
+    "cpf" : "22222222222",
+    "birthday" : 696996000000
+  },
+  "extracts" : [ {
+    "date" : 1603042261801,
+    "time" : "14:31:01",
+    "operation" : "RECEIVE",
+    "value" : 50.00
+  }, {
+    "date" : 1603042261949,
+    "time" : "14:31:01",
+    "operation" : "RECEIVE",
+    "value" : 50.00
+  }, {
+    "date" : 1603042560051,
+    "time" : "14:36:00",
+    "operation" : "RECEIVE",
+    "value" : 50.00
+  }, {
+    "date" : 1603042731914,
+    "time" : "14:38:51",
+    "operation" : "RECEIVE",
+    "value" : 270.55
+  } ]
+}, {
+  "id" : 2,
+  "balance" : 579.45,
+  "owner" : {
+    "id" : 2,
+    "username" : "maria",
+    "password" : "1234",
+    "name" : "maria",
+    "cpf" : "11111111111",
+    "birthday" : 662695200000
+  },
+  "extracts" : [ {
+    "date" : 1603042261772,
+    "time" : "14:31:01",
+    "operation" : "TRANSFER",
+    "value" : 50.00
+  }, {
+    "date" : 1603042261932,
+    "time" : "14:31:01",
+    "operation" : "TRANSFER",
+    "value" : 50.00
+  }, {
+    "date" : 1603042560020,
+    "time" : "14:36:00",
+    "operation" : "TRANSFER",
+    "value" : 50.00
+  }, {
+    "date" : 1603042731881,
+    "time" : "14:38:51",
+    "operation" : "TRANSFER",
+    "value" : 270.55
+  } ]
+} ]

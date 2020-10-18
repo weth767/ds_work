@@ -5,7 +5,6 @@
  */
 package view;
 
-import connection.Connection;
 import controller.UserController;
 import model.User;
 
@@ -26,7 +25,7 @@ public class LoginScreen extends javax.swing.JFrame {
     }
 
     public void login() {
-        UserController controller = new UserController(Connection.getConnection());
+        UserController controller = new UserController();
         User user
          = controller.findByUserPassWord(loginField.getText(), new String(passwordField.getPassword()));
          if (Objects.nonNull(user)) {
@@ -59,6 +58,7 @@ public class LoginScreen extends javax.swing.JFrame {
         cancelButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jLabel1.setText("Usuário:");
 
@@ -175,6 +175,7 @@ public class LoginScreen extends javax.swing.JFrame {
         StartScreen startScreen = new StartScreen();
         startScreen.setVisible(true);
         this.setVisible(false);
+        this.dispose();
     }//GEN-LAST:event_cancelButtonActionPerformed
 
 

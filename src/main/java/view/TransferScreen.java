@@ -7,10 +7,7 @@ package view;
 
 import DTO.MessageDTO;
 import DTO.TransferDTO;
-import connection.Connection;
 import controller.AccountController;
-import controller.ExtractController;
-import jdk.nashorn.internal.scripts.JO;
 import model.Account;
 import model.Bank;
 import model.User;
@@ -36,9 +33,13 @@ public class TransferScreen extends javax.swing.JDialog {
         this.user = user;
     }
 
+    private MainScreen mainScreen;
+
     public TransferScreen(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
+        this.mainScreen = (MainScreen) parent;
         initComponents();
+        this.mainScreen = mainScreen;
     }
 
     /**
@@ -59,6 +60,7 @@ public class TransferScreen extends javax.swing.JDialog {
         cancelButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
         jLabel1.setText("Valor:");
 
@@ -135,16 +137,17 @@ public class TransferScreen extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void transferButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transferButtonActionPerformed
-        AccountController accountController = new AccountController(Connection.getConnection());
+        AccountController accountController = new AccountController();
         String value = valueField.getText()
                 .replace(",", ".").replace("R$", "").trim();
-        TransferDTO transferDTO = accountController.transferValue(user.getPerson().getAccount(), cpfField.getText(), new BigDecimal(value));
+        Account accountUser = accountController.getAccountByCpf(user.getCpf());
+        TransferDTO transferDTO = accountController.transferValue(accountUser, cpfField.getText(), new BigDecimal(value));
         if (Objects.nonNull(transferDTO)) {
             MessageDTO messageDTO = new MessageDTO();
             messageDTO.setExecutedClass(EnumExecutedClass.ACCOUNT);
             messageDTO.setOperationType(EnumOperationType.TRANSFER);
             messageDTO.setObject(transferDTO);
-            Bank bank = new Bank();
+            Bank bank = new Bank(this.user);
             try {
                 bank.send(messageDTO);
             } catch (Exception e) {
@@ -154,12 +157,11 @@ public class TransferScreen extends javax.swing.JDialog {
                 JOptionPane.INFORMATION_MESSAGE);
         }
         else { JOptionPane.showMessageDialog(this,
-        "Erro ao transferir com sucesso!", null, JOptionPane.ERROR_MESSAGE); }
+        "Erro ao transferir!", null, JOptionPane.ERROR_MESSAGE); }
         cancelButton.doClick();
     }//GEN-LAST:event_transferButtonActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        MainScreen mainScreen = new MainScreen(user);
         mainScreen.setVisible(true);
         this.setVisible(false);
         this.dispose();
