@@ -66,10 +66,7 @@ public class Bank extends ReceiverAdapter {
                 break;
             case ACCOUNT:
                 TransferDTO transferDTO = (TransferDTO) messageDTO.getObject();
-                if (!transferDTO.getSource().getOwner().getId().equals(this.user.getId())) {
-                    AccountController accountController = new AccountController();
-                    accountController.transferValue(transferDTO.getSource(),
-                            transferDTO.getTarget().getOwner().getCpf(), transferDTO.getValue());
+                if (transferDTO.getSource().getOwner().getId().equals(this.user.getId())) {
                     userFile = new File(Constants.userPathFile);
                     accountFile = new File(Constants.accountPathFile);
                     try {
@@ -78,32 +75,32 @@ public class Bank extends ReceiverAdapter {
                         MessageDTO messageDTO1 = new MessageDTO();
                         messageDTO1.setExecutedClass(EnumExecutedClass.REPLICATE);
                         messageDTO1.setObject(new ArrayList<>(Arrays.asList(userContent, accountContent)));
-                        messageDTO1.setUserId(this.user.getId());
                         this.send(messageDTO1);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
+                /*AccountController accountController = new AccountController();
+                accountController.transferValue(transferDTO.getSource(),
+                        transferDTO.getTarget().getOwner().getCpf(), transferDTO.getValue());*/
                 break;
             case REPLICATE:
-                if (!this.user.getId().equals(messageDTO.getUserId())) {
-                    try {
-                        Files.deleteIfExists(new File(Constants.accountPathFile).toPath());
-                        Files.deleteIfExists(new File(Constants.userPathFile).toPath());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    ArrayList<byte[]> contents = (ArrayList<byte[]>) messageDTO.getObject();
-                    try (FileOutputStream fos = new FileOutputStream(Constants.userPathFile)) {
-                        fos.write(contents.get(0));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    try (FileOutputStream fos = new FileOutputStream(Constants.accountPathFile)) {
-                        fos.write(contents.get(1));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                try {
+                    Files.deleteIfExists(new File(Constants.accountPathFile).toPath());
+                    Files.deleteIfExists(new File(Constants.userPathFile).toPath());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                ArrayList<byte[]> contents = (ArrayList<byte[]>) messageDTO.getObject();
+                try (FileOutputStream fos = new FileOutputStream(Constants.userPathFile)) {
+                    fos.write(contents.get(0));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                try (FileOutputStream fos = new FileOutputStream(Constants.accountPathFile)) {
+                    fos.write(contents.get(1));
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
                 break;
         }
