@@ -12,6 +12,6 @@ import java.io.Serializable;
 public class MessageDTO implements Serializable {
     private EnumExecutedClass executedClass;
     private EnumOperationType operationType;
-    private String executedSql;
+    private Long userId;
     private Object object;
 }

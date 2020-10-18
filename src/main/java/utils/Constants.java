@@ -6,9 +6,8 @@ public class Constants {
     public static final String LOGIN_MESSAGE = "Digite seu usuário: ";
     public static final String PASSWORD_MESSAGE = "Digite sua senha: ";
     public static final String NEW_USER = "Digite seus dados: ";
-    public static final String pathFile = "src/main/resources/database.sqlite";
-    public static final String journalPathFile = "src/main/resources/database.sqlite-journal";
-    public static final String userPathFile = "src/main/resources/user.json";
-    public static final String accountPathFile = "src/main/resources/account.json";
-    public static final String extractPathFile = "src/main/resources/extract.json";
+    public static final String userPathFile = "./user.json";
+    public static final String accountPathFile = "./account.json";
+    public static final String extractPathFile = "./extract.json";
+    public static final String castXml = "./cast.xml";
 }
