@@ -1,0 +1,132 @@
+[ {
+  "id" : 1,
+  "balance" : 1351.01,
+  "owner" : {
+    "id" : 1,
+    "username" : "zezinho",
+    "password" : "1234",
+    "name" : "jose",
+    "cpf" : "22222222222",
+    "logged" : false,
+    "birthday" : 696996000000
+  },
+  "extracts" : [ {
+    "date" : 1603042261801,
+    "time" : "14:31:01",
+    "operation" : "RECEIVE",
+    "value" : 50.00
+  }, {
+    "date" : 1603042261949,
+    "time" : "14:31:01",
+    "operation" : "RECEIVE",
+    "value" : 50.00
+  }, {
+    "date" : 1603042560051,
+    "time" : "14:36:00",
+    "operation" : "RECEIVE",
+    "value" : 50.00
+  }, {
+    "date" : 1603042731914,
+    "time" : "14:38:51",
+    "operation" : "RECEIVE",
+    "value" : 270.55
+  }, {
+    "date" : 1603045205245,
+    "time" : "15:20:05",
+    "operation" : "RECEIVE",
+    "value" : 50.00
+  }, {
+    "date" : 1603045229317,
+    "time" : "15:20:29",
+    "operation" : "TRANSFER",
+    "value" : 55.25
+  }, {
+    "date" : 1603045229435,
+    "time" : "15:20:29",
+    "operation" : "TRANSFER",
+    "value" : 55.25
+  }, {
+    "date" : 1603047303037,
+    "time" : "15:55:03",
+    "operation" : "TRANSFER",
+    "value" : 0.02
+  }, {
+    "date" : 1603047303205,
+    "time" : "15:55:03",
+    "operation" : "TRANSFER",
+    "value" : 0.02
+  }, {
+    "date" : 1603048530816,
+    "time" : "16:15:30",
+    "operation" : "RECEIVE",
+    "value" : 28.00
+  }, {
+    "date" : 1603048558937,
+    "time" : "16:15:58",
+    "operation" : "TRANSFER",
+    "value" : 37.00
+  } ]
+}, {
+  "id" : 2,
+  "balance" : 648.97,
+  "owner" : {
+    "id" : 2,
+    "username" : "maria",
+    "password" : "1234",
+    "name" : "maria",
+    "cpf" : "11111111111",
+    "logged" : false,
+    "birthday" : 662695200000
+  },
+  "extracts" : [ {
+    "date" : 1603042261772,
+    "time" : "14:31:01",
+    "operation" : "TRANSFER",
+    "value" : 50.00
+  }, {
+    "date" : 1603042261932,
+    "time" : "14:31:01",
+    "operation" : "TRANSFER",
+    "value" : 50.00
+  }, {
+    "date" : 1603042560020,
+    "time" : "14:36:00",
+    "operation" : "TRANSFER",
+    "value" : 50.00
+  }, {
+    "date" : 1603042731881,
+    "time" : "14:38:51",
+    "operation" : "TRANSFER",
+    "value" : 270.55
+  }, {
+    "date" : 1603045205217,
+    "time" : "15:20:05",
+    "operation" : "TRANSFER",
+    "value" : 50.00
+  }, {
+    "date" : 1603045229327,
+    "time" : "15:20:29",
+    "operation" : "RECEIVE",
+    "value" : 55.25
+  }, {
+    "date" : 1603045229469,
+    "time" : "15:20:29",
+    "operation" : "RECEIVE",
+    "value" : 55.25
+  }, {
+    "date" : 1603047303222,
+    "time" : "15:55:03",
+    "operation" : "RECEIVE",
+    "value" : 0.02
+  }, {
+    "date" : 1603048530787,
+    "time" : "16:15:30",
+    "operation" : "TRANSFER",
+    "value" : 28.00
+  }, {
+    "date" : 1603048558941,
+    "time" : "16:15:58",
+    "operation" : "RECEIVE",
+    "value" : 37.00
+  } ]
+} ]
