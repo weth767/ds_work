@@ -1,4 +1,5 @@
 import DTO.MessageDTO;
+import model.Extract;
 import model.User;
 import org.jgroups.JChannel;
 import org.jgroups.Message;
@@ -6,10 +7,15 @@ import org.jgroups.ReceiverAdapter;
 import org.jgroups.View;
 import org.jgroups.blocks.RequestHandler;
 import utils.Constants;
+import view.ExtractScreen;
 import view.MainScreen;
 import view.StartScreen;
 
 import javax.swing.JOptionPane;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.List;
 
 public class Main extends ReceiverAdapter implements RequestHandler {
     JChannel channel;
@@ -41,6 +47,19 @@ public class Main extends ReceiverAdapter implements RequestHandler {
                 startScreen = new StartScreen(channel);
                 startScreen.setVisible(true);
                 break;
+            case AMOUNT_RESULT:
+                showValue((BigDecimal) messageDTO.getObject());
+                break;
+            case TRANSFER_SUCESS:
+                JOptionPane.showMessageDialog(null, "Transferência realizada com sucesso");
+                break;
+            case EXTRACT_RESULT:
+                List<Extract> extracts = (List<Extract>) messageDTO.getObject();
+                ExtractScreen extractScreen = new ExtractScreen(null, true, extracts);
+                extractScreen.setVisible(true);
+                break;
+            case BALANCE_RESULT:
+                showValue((BigDecimal) messageDTO.getObject());
             case ERROR:
                 JOptionPane.showMessageDialog(null, messageDTO.getObject());
                 startScreen = new StartScreen(channel);
@@ -48,6 +67,14 @@ public class Main extends ReceiverAdapter implements RequestHandler {
             default:
                 break;
         }
+    }
+
+    private void showValue(BigDecimal value) {
+        DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols();
+        decimalFormatSymbols.setDecimalSeparator(',');
+        decimalFormatSymbols.setGroupingSeparator('.');
+        JOptionPane.showMessageDialog(null, "Seu saldo é: R$"
+                +  new DecimalFormat("#,##0.00", decimalFormatSymbols).format(value));
     }
 
     @Override

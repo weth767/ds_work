@@ -5,9 +5,11 @@
  */
 package view;
 
+import model.Extract;
 import model.User;
 
 import javax.swing.DefaultListModel;
+import java.util.List;
 
 /**
  *
@@ -20,18 +22,16 @@ public class ExtractScreen extends javax.swing.JDialog {
     /**
      * Creates new form ExtractScreen
      */
-    public ExtractScreen(java.awt.Frame parent, boolean modal, User user) {
+    public ExtractScreen(java.awt.Frame parent, boolean modal, List<Extract> extracts) {
         super(parent, modal);
         initComponents();
         this.user = user;
         this.mainScreen = (MainScreen) parent;
         DefaultListModel model = new DefaultListModel();
-       /* AccountController accountController = new AccountController();
-        List<Extract> extracts = accountController.getAccountByCpf(user.getCpf()).getExtracts();
         extracts.forEach(extract -> {
             model.addElement(extract.toViewExtract());
         });
-        extractList.setModel(model);*/
+        extractList.setModel(model);
     }
 
     /**

@@ -9,6 +9,7 @@ public class Constants {
     public static final String USER_PATH_FILE = "./user.json";
     public static final String ACCOUNT_PATH_FILE = "./account.json";
     public static final String EXTRACT_PATH_FILE = "./extract.json";
+    public static final String LOG_PATH_FILE = "./logs.json";
     public static final String CAST_XML = "./src/main/resources/cast.xml";
     public static final String CHANNEL_NAME = "Parana Internet Banking";
     public static final String FORK_VIEW = "fork view";

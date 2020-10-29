@@ -39,6 +39,27 @@ public class MainScreen extends javax.swing.JFrame {
         channel.send(new Message(null, null, messageDTO));
     }
 
+    private void showExtracts() throws Exception {
+        MessageDTO messageDTO = new MessageDTO();
+        messageDTO.setObject(user.getCpf());
+        messageDTO.setBankMessage(EnumBankMessages.GET_EXTRACT);
+        channel.send(new Message(null, null, messageDTO));
+    }
+
+    private void showBalance() throws Exception{
+        MessageDTO messageDTO = new MessageDTO();
+        messageDTO.setObject(user.getCpf());
+        messageDTO.setBankMessage(EnumBankMessages.GET_BALANCE);
+        channel.send(new Message(null, null, messageDTO));
+    }
+
+    private void showAmount() throws Exception{
+        MessageDTO messageDTO = new MessageDTO();
+        messageDTO.setObject(null);
+        messageDTO.setBankMessage(EnumBankMessages.GET_AMOUNT);
+        channel.send(new Message(null, null, messageDTO));
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -138,29 +159,35 @@ public class MainScreen extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void transferButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transferButtonActionPerformed
-        TransferScreen transferScreen = new TransferScreen(this, true);
+        TransferScreen transferScreen = new TransferScreen(this, true, channel);
         transferScreen.setUser(user);
         transferScreen.setVisible(true);
     }//GEN-LAST:event_transferButtonActionPerformed
 
     private void balanceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_balanceButtonActionPerformed
-        /*BigDecimal value = accountController.getAccountByCpf(user.getCpf()).getBalance();
-        DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols();
-        decimalFormatSymbols.setDecimalSeparator(',');
-        decimalFormatSymbols.setGroupingSeparator('.');
-        JOptionPane.showMessageDialog(this, "Seu saldo é: R$"
-                +  new DecimalFormat("#,##0.00", decimalFormatSymbols).format(value));*/
+        try {
+            showBalance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_balanceButtonActionPerformed
 
     private void extractButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_extractButtonActionPerformed
-        ExtractScreen extractScreen = new ExtractScreen(this, true, user);
-        extractScreen.setVisible(true);
-
+        try {
+            showExtracts();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        this.setVisible(false);
+        this.dispose();
     }//GEN-LAST:event_extractButtonActionPerformed
 
     private void amountButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_amountButtonActionPerformed
-        /*JOptionPane.showMessageDialog(this, "O montante é: R$"
-                + accountController.getAmount());*/
+        try {
+            showAmount();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_amountButtonActionPerformed
 
     private void logoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutButtonActionPerformed

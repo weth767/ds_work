@@ -68,6 +68,10 @@ public class UserController {
         return findAll().stream().filter(user -> user.getCpf().equals(cpf)).findFirst().orElse(null);
     }
 
+    public User findByUserName(String username) {
+        return findAll().stream().filter(user -> user.getCpf().equals(username)).findFirst().orElse(null);
+    }
+
     public User findById(Long id) {
         return findAll().stream().filter(user -> user.getId().equals(id)).findFirst().orElse(null);
     }

@@ -1,23 +1,22 @@
 package config;
 
 import DTO.MessageDTO;
-import controller.UserController;
-import model.User;
 import model.enumeration.EnumBankMessages;
 import org.jgroups.Address;
 import org.jgroups.JChannel;
 import org.jgroups.Message;
 import org.jgroups.ReceiverAdapter;
 import org.jgroups.View;
-import org.jgroups.blocks.MessageDispatcher;
 import org.jgroups.blocks.RequestHandler;
 
 import java.util.List;
-import java.util.Objects;
 
 public class Server extends ReceiverAdapter implements RequestHandler {
     JChannel channel;
-    UserController userController = new UserController();
+    List<Address> members;
+    LoginMethods loginMethods;
+    ClientMethods clientMethods;
+    AccountMethods accountMethods;
 
     public void start (String channelName, String configs) throws Exception {
         /*quando o coordenador for instanciado ele gera o canal e os forks*/
@@ -25,6 +24,9 @@ public class Server extends ReceiverAdapter implements RequestHandler {
         channel.setReceiver(this);
         channel.setDiscardOwnMessages(true);
         channel.connect(channelName);
+        loginMethods = new LoginMethods(channel);
+        clientMethods = new ClientMethods(channel);
+        accountMethods = new AccountMethods(channel);
     }
 
     /**
@@ -35,21 +37,36 @@ public class Server extends ReceiverAdapter implements RequestHandler {
         Address userAddress = msg.getSrc();
         switch (message.getBankMessage()) {
             case LOGIN_CLIENT:
-                loginClient(message, userAddress);
+                loginMethods.loginClient(message, userAddress);
                 break;
             case SAVE_CLIENT:
-                saveClient(message, userAddress);
+                clientMethods.saveClient(message, userAddress);
                 break;
             case LOGOUT_CLIENT:
-                logout(message, userAddress);
+                loginMethods.logout(message, userAddress);
+                break;
+            case GET_BALANCE:
+                accountMethods.checkBalance(message, userAddress);
+                break;
+            case GET_EXTRACT:
+                accountMethods.checkExtract(message, userAddress);
+                break;
+            case GET_AMOUNT:
+                accountMethods.checkAmount(userAddress);
+                break;
+            case TRANSFER_VALUE:
+                accountMethods.transferValue(message, userAddress);
                 break;
             default:
+                invalidOperation(userAddress);
                 break;
         }
     }
 
     @Override
     public void viewAccepted(View new_view) {
+        members = channel.getView().getMembers();
+        System.out.println("Members: " + members);
         System.out.println("\t** nova View do cluster: " + new_view);
     }
 
@@ -62,65 +79,12 @@ public class Server extends ReceiverAdapter implements RequestHandler {
         return null;
     }
 
-    private void loginClient(MessageDTO message, Address userAddress) {
-        try {
-            List<String> informations = (List<String>) message.getObject();
-            MessageDTO response = new MessageDTO();
-            if (Objects.isNull(informations) || informations.size() < 2) {
-                response.setObject("Erro ao logar");
-                response.setBankMessage(EnumBankMessages.ERROR);
-                channel.send(userAddress, message);
-                return;
-            }
-            User user = userController.findByUserPassWord(informations.get(0), informations.get(1));
-            if (Objects.isNull(user)) {
-                response.setObject("Login ou senha incorretos");
-                response.setBankMessage(EnumBankMessages.ERROR);
-            } else if(user.isLogged()) {
-                response.setObject("Erro ao logar");
-                response.setBankMessage(EnumBankMessages.ERROR);
-            } else {
-                user.setLogged(true);
-                userController.update(user);
-                response.setObject(user);
-                response.setBankMessage(EnumBankMessages.LOGIN_SUCESS);
-            }
-            channel.send(userAddress, response);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void logout(MessageDTO message, Address userAddress) {
+    private void invalidOperation(Address userAddress) {
         try {
             MessageDTO response = new MessageDTO();
-            User user = (User) message.getObject();
-            user.setLogged(false);
-            userController.update(user);
-            response.setBankMessage(EnumBankMessages.LOGOUT_SUCESS);
-            response.setObject("Deslogado com sucesso");
+            response.setBankMessage(EnumBankMessages.INVALID_OPERATION_ERROR);
+            response.setObject("Operação Invalída!");
             channel.send(userAddress, response);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void saveClient(MessageDTO message, Address userAddress) {
-        try {
-            User user = (User) message.getObject();
-            if (Objects.nonNull(user)) {
-                MessageDTO response = new MessageDTO();
-                // verificar campos obrigatorios se precisar
-                if (Objects.nonNull(userController.findByCpf(user.getCpf()))) {
-                    response.setObject("Usuário já existe no sistema");
-                    response.setBankMessage(EnumBankMessages.ERROR);
-                } else {
-                    userController.save(user);
-                    response.setObject("Usuário cadastrado com sucesso");
-                    response.setBankMessage(EnumBankMessages.SAVE_CLIENT_SUCESS);
-                }
-                channel.send(userAddress, response);
-            }
         } catch (Exception e) {
             e.printStackTrace();
         }

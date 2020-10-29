@@ -5,7 +5,16 @@
  */
 package view;
 
+import DTO.MessageDTO;
 import model.User;
+import model.enumeration.EnumBankMessages;
+import org.jgroups.Channel;
+import org.jgroups.JChannel;
+import org.jgroups.Message;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -23,12 +32,28 @@ public class TransferScreen extends javax.swing.JDialog {
     }
 
     private MainScreen mainScreen;
+    private Channel channel;
 
-    public TransferScreen(java.awt.Frame parent, boolean modal) {
+    public TransferScreen(java.awt.Frame parent, boolean modal, JChannel channel) {
         super(parent, modal);
         this.mainScreen = (MainScreen) parent;
         initComponents();
         this.mainScreen = mainScreen;
+        this.channel = channel;
+    }
+
+    private void transferValue() throws Exception {
+        List<Object> transferInformations = new ArrayList<>();
+        transferInformations.add(user.getCpf());
+        transferInformations.add(cpfField.getText());
+        String value = valueField.getText()
+                .replace(",", ".").replace("R$", "").trim();
+        transferInformations.add(new BigDecimal(value));
+        MessageDTO messageDTO = new MessageDTO();
+        messageDTO.setObject(transferInformations);
+        messageDTO.setBankMessage(EnumBankMessages.TRANSFER_VALUE);
+        channel.send(new Message(null, null, messageDTO));
+        cancelButton.doClick();
     }
 
     /**
@@ -126,28 +151,11 @@ public class TransferScreen extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void transferButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transferButtonActionPerformed
-        /*AccountController accountController = new AccountController();
-        String value = valueField.getText()
-                .replace(",", ".").replace("R$", "").trim();
-        Account accountUser = accountController.getAccountByCpf(user.getCpf());
-        TransferDTO transferDTO = accountController.transferValue(accountUser, cpfField.getText(), new BigDecimal(value));
-        if (Objects.nonNull(transferDTO)) {
-            MessageDTO messageDTO = new MessageDTO();
-            messageDTO.setExecutedClass(EnumExecutedClass.ACCOUNT);
-            messageDTO.setOperationType(EnumOperationType.TRANSFER);
-            messageDTO.setObject(transferDTO);
-            Bank bank = new Bank(this.user);
-            try {
-                bank.send(messageDTO);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            JOptionPane.showMessageDialog(this, "Valor transferido com sucesso!", null,
-                JOptionPane.INFORMATION_MESSAGE);
+        try {
+            transferValue();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        else { JOptionPane.showMessageDialog(this,
-        "Erro ao transferir!", null, JOptionPane.ERROR_MESSAGE); }
-        cancelButton.doClick();*/
     }//GEN-LAST:event_transferButtonActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
