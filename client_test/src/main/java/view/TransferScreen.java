@@ -12,6 +12,7 @@ import org.jgroups.Channel;
 import org.jgroups.JChannel;
 import org.jgroups.Message;
 
+import javax.swing.JDialog;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +39,7 @@ public class TransferScreen extends javax.swing.JDialog {
         super(parent, modal);
         this.mainScreen = (MainScreen) parent;
         initComponents();
-        this.mainScreen = mainScreen;
+        this.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
         this.channel = channel;
     }
 

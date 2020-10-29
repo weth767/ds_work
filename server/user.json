@@ -14,12 +14,4 @@
   "cpf" : "11111111111",
   "logged" : false,
   "birthday" : 662695200000
-}, {
-  "id" : 3,
-  "username" : "reginaldo",
-  "password" : "1234",
-  "name" : "Reginaldo",
-  "cpf" : "33333333333",
-  "logged" : false,
-  "birthday" : 978314400000
 } ]

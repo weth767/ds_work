@@ -12,6 +12,7 @@ import model.enumeration.EnumBankMessages;
 import org.jgroups.JChannel;
 import org.jgroups.Message;
 
+import javax.swing.JFrame;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -29,7 +30,9 @@ public class MainScreen extends javax.swing.JFrame {
     public MainScreen(User user, JChannel channel) {
         this.user = user;
         this.channel = channel;
+        setTitle(user.getName());
         initComponents();
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
     }
 
     private void logout() throws Exception{

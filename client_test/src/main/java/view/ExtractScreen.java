@@ -9,6 +9,8 @@ import model.Extract;
 import model.User;
 
 import javax.swing.DefaultListModel;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 import java.util.List;
 
 /**
@@ -17,7 +19,6 @@ import java.util.List;
  */
 public class ExtractScreen extends javax.swing.JDialog {
 
-    private User user;
     private MainScreen mainScreen;
     /**
      * Creates new form ExtractScreen
@@ -25,7 +26,7 @@ public class ExtractScreen extends javax.swing.JDialog {
     public ExtractScreen(java.awt.Frame parent, boolean modal, List<Extract> extracts) {
         super(parent, modal);
         initComponents();
-        this.user = user;
+        this.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
         this.mainScreen = (MainScreen) parent;
         DefaultListModel model = new DefaultListModel();
         extracts.forEach(extract -> {

@@ -20,13 +20,14 @@ import java.util.List;
 public class Main extends ReceiverAdapter implements RequestHandler {
     JChannel channel;
     StartScreen startScreen;
+    MainScreen mainScreen;
 
     private void start() throws Exception {
         channel = new JChannel(Constants.CAST_XML);
         channel.setReceiver(this);
         channel.setDiscardOwnMessages(true);
         channel.connect(Constants.CHANNEL_NAME);
-        StartScreen startScreen = new StartScreen(channel);
+        startScreen = new StartScreen(channel);
         startScreen.setVisible(true);
     }
 
@@ -38,8 +39,13 @@ public class Main extends ReceiverAdapter implements RequestHandler {
         switch (messageDTO.getBankMessage()) {
             case LOGIN_SUCESS:
                 User user = (User) messageDTO.getObject();
-                MainScreen mainScreen = new MainScreen(user, channel);
+                mainScreen = new MainScreen(user, channel);
                 mainScreen.setVisible(true);
+                break;
+            case LOGOUT_SUCESS:
+                startScreen.dispose();
+                startScreen = new StartScreen(channel);
+                startScreen.setVisible(true);
                 break;
             case SAVE_CLIENT_SUCESS:
                 JOptionPane.showMessageDialog(null,
@@ -55,16 +61,19 @@ public class Main extends ReceiverAdapter implements RequestHandler {
                 break;
             case EXTRACT_RESULT:
                 List<Extract> extracts = (List<Extract>) messageDTO.getObject();
-                ExtractScreen extractScreen = new ExtractScreen(null, true, extracts);
+                ExtractScreen extractScreen = new ExtractScreen(mainScreen, true, extracts);
                 extractScreen.setVisible(true);
                 break;
             case BALANCE_RESULT:
                 showValue((BigDecimal) messageDTO.getObject());
+                break;
             case ERROR:
                 JOptionPane.showMessageDialog(null, messageDTO.getObject());
                 startScreen = new StartScreen(channel);
                 startScreen.setVisible(true);
+                break;
             default:
+                JOptionPane.showMessageDialog(null, messageDTO.getObject());
                 break;
         }
     }

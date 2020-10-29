@@ -15,6 +15,8 @@ import org.jgroups.Message;
 import javax.swing.JOptionPane;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  *
@@ -44,13 +46,14 @@ public class CreateAccountScreen extends javax.swing.JFrame {
             user.setBirthday(simpleDateFormat.parse(birthdayField.getText()));
             user.setUsername(userField.getText());
             user.setPassword(new String(passwordField.getPassword()));
+            account.setOwner(user);
 
             MessageDTO messageDTO = new MessageDTO();
-            messageDTO.setObject(user);
+            messageDTO.setObject(new ArrayList<Object>(Arrays.asList(user, account)));
             messageDTO.setBankMessage(EnumBankMessages.SAVE_CLIENT);
             channel.send(new Message(null, null, messageDTO));
 
-            account.setOwner(user);
+
             //accountController.save(account);
             this.setVisible(false);
             this.dispose();

@@ -34,31 +34,12 @@ public class AccountMethods {
             String cpfTarget = (String) transferInformations.get(1);
             BigDecimal value = (BigDecimal) transferInformations.get(2);
             TransferDTO transferDTO = accountController.transferValue(source, cpfTarget, value);
-            updateExtract(transferDTO);
             response.setObject("Transferência realizada com sucesso");
             response.setBankMessage(EnumBankMessages.TRANSFER_SUCESS);
             channel.send(userAddress, response);
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private void updateExtract(TransferDTO transferDTO) {
-        Extract extractSource = new Extract();
-        extractSource.setOperation(EnumOperationType.TRANSFER);
-        extractSource.setTime(Time.valueOf(LocalTime.now()));
-        extractSource.setDate(Date.from(Instant.now()));
-        extractSource.setValue(transferDTO.getValue());
-        transferDTO.getSource().getExtracts().add(extractSource);
-        accountController.update(transferDTO.getSource());
-
-        Extract extractTarget = new Extract();
-        extractTarget.setOperation(EnumOperationType.RECEIVE);
-        extractTarget.setTime(Time.valueOf(LocalTime.now()));
-        extractTarget.setDate(Date.from(Instant.now()));
-        extractTarget.setValue(transferDTO.getValue());
-        transferDTO.getTarget().getExtracts().add(extractSource);
-        accountController.update(transferDTO.getTarget());
     }
 
     public void checkAmount(Address userAddress) {
