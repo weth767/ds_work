@@ -7,14 +7,12 @@ package view;
  */
 
 import DTO.MessageDTO;
+import control.RequestControl;
 import model.User;
 import model.enumeration.EnumBankMessages;
-import org.jgroups.JChannel;
 import org.jgroups.Message;
 
 import javax.swing.JFrame;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  *
@@ -23,13 +21,13 @@ import java.util.Arrays;
 public class MainScreen extends javax.swing.JFrame {
 
     private User user;
-    private JChannel channel;
+    private RequestControl requestControl;
     /**
      * Creates new form MainScreen
      */
-    public MainScreen(User user, JChannel channel) {
+    public MainScreen(User user, RequestControl requestControl) {
         this.user = user;
-        this.channel = channel;
+        this.requestControl = requestControl;
         setTitle(user.getName());
         initComponents();
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -39,28 +37,28 @@ public class MainScreen extends javax.swing.JFrame {
         MessageDTO messageDTO = new MessageDTO();
         messageDTO.setObject(user);
         messageDTO.setBankMessage(EnumBankMessages.LOGOUT_CLIENT);
-        channel.send(new Message(null, null, messageDTO));
+        requestControl.channel.send(new Message(null, null, messageDTO));
     }
 
     private void showExtracts() throws Exception {
         MessageDTO messageDTO = new MessageDTO();
         messageDTO.setObject(user.getCpf());
         messageDTO.setBankMessage(EnumBankMessages.GET_EXTRACT);
-        channel.send(new Message(null, null, messageDTO));
+        requestControl.channel.send(new Message(null, null, messageDTO));
     }
 
     private void showBalance() throws Exception{
         MessageDTO messageDTO = new MessageDTO();
         messageDTO.setObject(user.getCpf());
         messageDTO.setBankMessage(EnumBankMessages.GET_BALANCE);
-        channel.send(new Message(null, null, messageDTO));
+        requestControl.channel.send(new Message(null, null, messageDTO));
     }
 
     private void showAmount() throws Exception{
         MessageDTO messageDTO = new MessageDTO();
         messageDTO.setObject(null);
         messageDTO.setBankMessage(EnumBankMessages.GET_AMOUNT);
-        channel.send(new Message(null, null, messageDTO));
+        requestControl.channel.send(new Message(null, null, messageDTO));
     }
 
     /**
@@ -162,7 +160,7 @@ public class MainScreen extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void transferButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transferButtonActionPerformed
-        TransferScreen transferScreen = new TransferScreen(this, true, channel);
+        TransferScreen transferScreen = new TransferScreen(this, true, requestControl);
         transferScreen.setUser(user);
         transferScreen.setVisible(true);
     }//GEN-LAST:event_transferButtonActionPerformed

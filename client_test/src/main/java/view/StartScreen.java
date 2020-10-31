@@ -6,13 +6,7 @@
 package view;
 
 
-import DTO.MessageDTO;
-import model.enumeration.EnumBankMessages;
-import org.jgroups.JChannel;
-import org.jgroups.Message;
-
-import java.util.ArrayList;
-import java.util.Arrays;
+import control.RequestControl;
 
 /**
  *
@@ -23,10 +17,10 @@ public class StartScreen extends javax.swing.JFrame {
     /**
      * Creates new form StartScreen
      */
-    JChannel channel;
-    public StartScreen(JChannel channel) {
+    RequestControl requestControl;
+    public StartScreen(RequestControl requestControl) {
         initComponents();
-        this.channel = channel;
+        this.requestControl = requestControl;
     }
 
     /**
@@ -108,14 +102,14 @@ public class StartScreen extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
-        LoginScreen loginScreen = new LoginScreen(channel);
+        LoginScreen loginScreen = new LoginScreen(requestControl);
         loginScreen.setVisible(true);
         this.setVisible(false);
         this.dispose();
     }//GEN-LAST:event_loginButtonActionPerformed
 
     private void createAccountButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createAccountButtonActionPerformed
-        CreateAccountScreen createAccountScreen = new CreateAccountScreen(channel);
+        CreateAccountScreen createAccountScreen = new CreateAccountScreen(requestControl);
         createAccountScreen.setVisible(true);
         this.setVisible(false);
         this.dispose();

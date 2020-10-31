@@ -6,12 +6,15 @@
 package view;
 
 import DTO.MessageDTO;
+import control.RequestControl;
 import model.enumeration.EnumBankMessages;
-import org.jgroups.JChannel;
 import org.jgroups.Message;
+import org.jgroups.util.Util;
+import utils.Constants;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 
 /**
  *
@@ -22,18 +25,53 @@ public class LoginScreen extends javax.swing.JFrame {
     /**
      * Creates new form LoginScreen
      */
-    JChannel channel;
+    RequestControl requestControl;
 
-    public LoginScreen(JChannel channel) {
-        this.channel = channel;
+    public LoginScreen(RequestControl requestControl) {
+        this.requestControl = requestControl;
         initComponents();
     }
 
     public void loginClient(String username, String password) throws Exception {
-        MessageDTO messageDTO = new MessageDTO();
-        messageDTO.setObject(new ArrayList<>(Arrays.asList(username, password)));
-        messageDTO.setBankMessage(EnumBankMessages.LOGIN_CLIENT);
-        channel.send(new Message(null, null, messageDTO));
+        int attempts = 0;
+        MessageDTO handShake = new MessageDTO();
+        handShake.setObject("Request Server");
+        handShake.setBankMessage(EnumBankMessages.REQUEST_SERVER);
+        requestControl.channel.send(new Message(null, null, handShake));
+        requestControl.serverAlreadyResponse = false;
+
+        /*Timeout de recebimento de handshake*/
+        Util.sleep(500);
+
+        if (Objects.nonNull(requestControl.serverAddress)) {
+            MessageDTO messageDTO = new MessageDTO();
+            messageDTO.setObject(new ArrayList<>(Arrays.asList(username, password)));
+            messageDTO.setBankMessage(EnumBankMessages.LOGIN_CLIENT);
+            requestControl.channel.send(requestControl.serverAddress, messageDTO);
+            /*reseta o controle de get first sempre que enviar uma mensagem, caso dependa de get_first*/
+            requestControl.serverAlreadyResponse = false;
+        }
+        /*while(Objects.nonNull(requestControl.serverAddress) && attempts < Constants.ATTEMPTS_MAX) {
+            MessageDTO handShake = new MessageDTO();
+            handShake.setObject("Request Server");
+            handShake.setBankMessage(EnumBankMessages.REQUEST_SERVER);
+            requestControl.channel.send(new Message(null, null, handShake));
+            requestControl.serverAlreadyResponse = false;
+
+            *//*Timeout de recebimento de handshake*//*
+            Util.sleep(500);
+
+            if (Objects.nonNull(requestControl.serverAddress)) {
+                MessageDTO messageDTO = new MessageDTO();
+                messageDTO.setObject(new ArrayList<>(Arrays.asList(username, password)));
+                messageDTO.setBankMessage(EnumBankMessages.LOGIN_CLIENT);
+                requestControl.channel.send(requestControl.serverAddress, messageDTO);
+                *//*reseta o controle de get first sempre que enviar uma mensagem, caso dependa de get_first*//*
+                requestControl.serverAlreadyResponse = false;
+                break;
+            }
+            attempts++;
+        }*/
     }
 
     /**
@@ -176,7 +214,7 @@ public class LoginScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_connectionButtonActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        StartScreen startScreen = new StartScreen(channel);
+        StartScreen startScreen = new StartScreen(requestControl);
         startScreen.setVisible(true);
         this.setVisible(false);
         this.dispose();

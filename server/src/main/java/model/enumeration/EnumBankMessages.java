@@ -19,4 +19,7 @@ public enum EnumBankMessages {
     EXTRACT_RESULT,
     AMOUNT_RESULT,
     BALANCE_RESULT,
+
+    REQUEST_SERVER,
+    YOU_WISH
 }

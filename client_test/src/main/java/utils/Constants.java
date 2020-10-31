@@ -11,4 +11,5 @@ public class Constants {
     public static final String EXTRACT_PATH_FILE = "./extract.json";
     public static final String CAST_XML = "./src/main/resources/cast.xml";
     public static final String CHANNEL_NAME = "Parana Internet Banking";
+    public static final Integer ATTEMPTS_MAX = 5;
 }

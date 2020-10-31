@@ -6,14 +6,12 @@
 package view;
 
 import DTO.MessageDTO;
+import control.RequestControl;
 import model.Account;
 import model.User;
 import model.enumeration.EnumBankMessages;
-import org.jgroups.JChannel;
 import org.jgroups.Message;
 
-import javax.swing.JOptionPane;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,14 +25,14 @@ public class CreateAccountScreen extends javax.swing.JFrame {
     /**
      * Creates new form CreateAccountScreen
      */
-    public CreateAccountScreen(JChannel channel) {
-        initComponents();
-        this.channel = channel;
-    }
-
     public Account account;
-    public JChannel channel;
+    public RequestControl requestControl;
     public User user;
+
+    public CreateAccountScreen(RequestControl requestControl) {
+        initComponents();
+        this.requestControl = requestControl;
+    }
 
     private void saveNewUser() {
         this.user = new User();
@@ -51,10 +49,8 @@ public class CreateAccountScreen extends javax.swing.JFrame {
             MessageDTO messageDTO = new MessageDTO();
             messageDTO.setObject(new ArrayList<Object>(Arrays.asList(user, account)));
             messageDTO.setBankMessage(EnumBankMessages.SAVE_CLIENT);
-            channel.send(new Message(null, null, messageDTO));
+            requestControl.channel.send(new Message(null, null, messageDTO));
 
-
-            //accountController.save(account);
             this.setVisible(false);
             this.dispose();
         } catch (Exception e) {
@@ -229,7 +225,7 @@ public class CreateAccountScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_createAccountButtonActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        StartScreen startScreen = new StartScreen(null);
+        StartScreen startScreen = new StartScreen(requestControl);
         startScreen.setVisible(true);
         this.setVisible(false);
         this.dispose();

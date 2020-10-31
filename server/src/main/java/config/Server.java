@@ -57,6 +57,16 @@ public class Server extends ReceiverAdapter implements RequestHandler {
             case TRANSFER_VALUE:
                 accountMethods.transferValue(message, userAddress);
                 break;
+            case REQUEST_SERVER:
+                try {
+                    MessageDTO response = new MessageDTO();
+                    response.setBankMessage(EnumBankMessages.YOU_WISH);
+                    response.setObject("What you wish");
+                    channel.send(userAddress, response);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
             default:
                 invalidOperation(userAddress);
                 break;

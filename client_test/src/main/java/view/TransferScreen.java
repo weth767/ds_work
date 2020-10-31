@@ -6,10 +6,9 @@
 package view;
 
 import DTO.MessageDTO;
+import control.RequestControl;
 import model.User;
 import model.enumeration.EnumBankMessages;
-import org.jgroups.Channel;
-import org.jgroups.JChannel;
 import org.jgroups.Message;
 
 import javax.swing.JDialog;
@@ -32,15 +31,15 @@ public class TransferScreen extends javax.swing.JDialog {
         this.user = user;
     }
 
-    private MainScreen mainScreen;
-    private Channel channel;
+    private final MainScreen mainScreen;
+    private RequestControl requestControl;
 
-    public TransferScreen(java.awt.Frame parent, boolean modal, JChannel channel) {
+    public TransferScreen(java.awt.Frame parent, boolean modal, RequestControl requestControl) {
         super(parent, modal);
         this.mainScreen = (MainScreen) parent;
         initComponents();
         this.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-        this.channel = channel;
+        this.requestControl = requestControl;
     }
 
     private void transferValue() throws Exception {
@@ -53,7 +52,7 @@ public class TransferScreen extends javax.swing.JDialog {
         MessageDTO messageDTO = new MessageDTO();
         messageDTO.setObject(transferInformations);
         messageDTO.setBankMessage(EnumBankMessages.TRANSFER_VALUE);
-        channel.send(new Message(null, null, messageDTO));
+        requestControl.channel.send(new Message(null, null, messageDTO));
         cancelButton.doClick();
     }
 
