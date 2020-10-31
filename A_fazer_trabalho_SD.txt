@@ -1,0 +1,12 @@
+1 - criar um protocolo interno para controle de coordenador.
+2 - cada aplicação precisa verificar qual se ele é o coordenador(talvez não precise).
+3 - leitura = multicast(get_first)
+4 - escrita = multicast(get_majority)
+5 - separar em canais(identificar mais facilmente quem é quem e pegar maioria)
+6 - opcional separar em forks
+7 - criptografia(exemplo encrypt.xml) *Feito
+8 - explicar porque dos itens do xml
+9 - olhar os valores do xml(talvez diminuir os tempos)
+10 - olhar o sequencer(ordenação e uso de relógio lógicos)
+11 - despachante ambos os lados
+12 - despachante utiliza o castMessage
