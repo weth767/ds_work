@@ -13,24 +13,22 @@
 
             thread_pool.min_threads="2"
             thread_pool.max_threads="8"
-            thread_pool.keep_alive_time="5000"/>
-
-    <PING />
-    <FD_SOCK/> <!-- verificar qual dos FD usar -->
-    <FD_ALL/>
-    <VERIFY_SUSPECT timeout="1500"  />
-    <BARRIER />
+            thread_pool.keep_alive_time="5000"/> <!-- Protocolo de transporte utilizado para as mensagens -->
+    <PING /> <!-- Método de identificação de membros do middleware -->
+    <FD_ALL/> <!-- Detecção de falha com base em mensagens de pulsação, você está vivo. Gera notificação se um membro falhar -->
+    <VERIFY_SUSPECT timeout="1500"  /> <!-- Verifica se realmente o membro está com problemas -->
     <pbcast.NAKACK2 use_mcast_xmit="true"
-                    discard_delivered_msgs="true"/>
-    <UNICAST3 />
-    <pbcast.STABLE stability_delay="1000" desired_avg_gossip="50000"
-                   max_bytes="4M"/>
-    <pbcast.GMS print_local_addr="true" join_timeout="2000"/>
+                    discard_delivered_msgs="true"/> <!-- Garante que a mensagem multicast vai ser entregue ou avisa o sender para
+                     tentar novamente-->
+    <UNICAST3 /> <!-- Faz basicamente a mesma coisa que o NAKACK2, so que para unicast -->
+    <pbcast.STABLE stability_delay="1000" desired_avg_gossip="5000"
+                   max_bytes="4M"/> <!-- Exclui mensagens que foram vistas por todos os membros (coleta de lixo de mensagem distribuída) -->
+    <pbcast.GMS print_local_addr="true" join_timeout="2000"/> <!-- Protocolo de adesão. Responsável por ingressar / deixar membros e instalar novas visualizações.-->
     <UFC max_credits="2M"
-         min_threshold="0.4"/>
+         min_threshold="0.4"/> <!-- Controle de fluxo Unicast. Fornece controle de fluxo entre 2 membros. -->
     <MFC max_credits="2M"
-         min_threshold="0.4"/>
-    <FRAG2 frag_size="60K"  />
-    <pbcast.STATE_TRANSFER />
+         min_threshold="0.4"/> <!-- Controle de fluxo multicast. Fornece controle de fluxo entre um remetente e todos os membros do cluster. -->
+    <FRAG2 frag_size="60K"  /> <!-- Divide as mensagens, quando são maiores que o tamanho especificado -->
     <ENCRYPT encrypt_entire_message="false" sym_init="128" sym_algorithm="AES/ECB/PKCS5Padding" asym_init="512" asym_algorithm="RSA"/>
+    <!-- Criptografa e discriptografa a mensagem(Sem o header) utilizando AES simetrico de 128 bits e assimetrico de 512 utilizando RSA  -->
 </config>
