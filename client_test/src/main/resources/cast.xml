@@ -24,8 +24,6 @@
     <pbcast.STABLE stability_delay="1000" desired_avg_gossip="5000"
                    max_bytes="4M"/> <!-- Exclui mensagens que foram vistas por todos os membros (coleta de lixo de mensagem distribuída) -->
     <pbcast.GMS print_local_addr="true" join_timeout="2000"/> <!-- Protocolo de adesão. Responsável por ingressar / deixar membros e instalar novas visualizações.-->
-    <UFC max_credits="2M"
-         min_threshold="0.4"/> <!-- Controle de fluxo Unicast. Fornece controle de fluxo entre 2 membros. -->
     <MFC max_credits="2M"
          min_threshold="0.4"/> <!-- Controle de fluxo multicast. Fornece controle de fluxo entre um remetente e todos os membros do cluster. -->
     <FRAG2 frag_size="60K"  /> <!-- Divide as mensagens, quando são maiores que o tamanho especificado -->
